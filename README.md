@@ -1,8 +1,6 @@
-<<<<<<< Updated upstream
-# web-app-assignment
-Web Based Application Development Assignment
-=======
-# ShopForge — SE102.3 Web Based Application Development
+# ShopForge — Web Based Application Development
+
+**Online E-Commerce Store with Admin Panel**
 
 A full-stack e-commerce website built with **PHP** and **MySQL**.
 
@@ -109,4 +107,3 @@ shopforge/
 
 Push this folder to GitHub. The `database.sql` file is included so your lecturer can set it up.
 There is no `node_modules` or any build step — just PHP files.
->>>>>>> Stashed changes

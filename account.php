@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 <?php
 $page_title = 'My Account';
 require 'includes/db.php';
@@ -21,182 +20,88 @@ $stmt->bind_param('i', $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
-$member_since = $user['created_at'] ?? null;
+// Simple GET parameter tab handler
+$tab = isset($_GET['tab']) ? $_GET['tab'] : 'profile';
 
 require 'includes/header.php';
 ?>
 
 <section class="page-hero">
     <div class="container">
-        <div class="breadcrumb">
-            <a href="index.php">Home</a>
-            <span>/</span>
-            <span>My Account</span>
-        </div>
-        <h1>My Account</h1>
-        <p>Manage your profile details and review your ShopForge account information.</p>
+        <h1>Welcome, <?php echo htmlspecialchars($user_name); ?></h1>
+        <p>Manage your account settings and details below.</p>
     </div>
 </section>
 
 <section>
     <div class="container">
-        <div class="account-card">
-            <h2>Welcome back, <?php echo htmlspecialchars($user_name); ?>.</h2>
-            <p>Here are your account details. If you want, you can sign out and use the same account later.</p>
-
-            <dl class="account-details">
-                <div>
-                    <dt>Username</dt>
-                    <dd><?php echo htmlspecialchars($user_name); ?></dd>
-                </div>
-                <div>
-                    <dt>Email</dt>
-                    <dd><?php echo htmlspecialchars($user_email); ?></dd>
-                </div>
-                <?php if ($member_since): ?>
-                <div>
-                    <dt>Member since</dt>
-                    <dd><?php echo date('F j, Y', strtotime($member_since)); ?></dd>
-                </div>
-                <?php endif; ?>
-            </dl>
-
-            <div class="account-actions">
-                <a href="logout.php" class="btn btn-secondary btn-sm">Sign Out</a>
-                <a href="products.php" class="btn btn-primary btn-sm">Continue Shopping</a>
-            </div>
+        <!-- Horizontal Menu bar (Links with GET params) -->
+        <div class="account-menu">
+            <a href="account.php?tab=profile" class="menu-link <?php echo $tab === 'profile' ? 'active' : ''; ?>">👤 Profile Details</a>
+            <a href="account.php?tab=orders" class="menu-link <?php echo $tab === 'orders' ? 'active' : ''; ?>">📦 Order History</a>
+            <a href="account.php?tab=wishlist" class="menu-link <?php echo $tab === 'wishlist' ? 'active' : ''; ?>">❤️ Saved Items</a>
+            <a href="account.php?tab=security" class="menu-link <?php echo $tab === 'security' ? 'active' : ''; ?>">🔒 Security & Support</a>
+            <a href="logout.php" class="menu-link logout-link">🚪 Sign Out</a>
         </div>
 
-        <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <div class="dashboard-card-header">
-                    <h3>Order History</h3>
-                    <span class="badge">0 orders</span>
+        <!-- Dynamic Content Box handled via standard PHP if/else -->
+        <div class="account-content">
+            <?php if ($tab === 'profile'): ?>
+                <div class="profile-section">
+                    <h2>Profile Details</h2>
+                    <table class="profile-table">
+                        <tr>
+                            <th>Username</th>
+                            <td><?php echo htmlspecialchars($user_name); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Email Address</th>
+                            <td><?php echo htmlspecialchars($user_email); ?></td>
+                        </tr>
+                        <?php if ($member_since): ?>
+                        <tr>
+                            <th>Member Since</th>
+                            <td><?php echo date('F j, Y', strtotime($member_since)); ?></td>
+                        </tr>
+                        <?php endif; ?>
+                        <tr>
+                            <th>Account Status</th>
+                            <td style="color: #166534; font-weight: bold;">Active</td>
+                        </tr>
+                    </table>
                 </div>
-                <p>You haven’t placed any orders yet. Once you buy something, your order history will appear here.</p>
-                <a href="products.php" class="btn btn-secondary btn-sm">Browse products</a>
-            </div>
 
-            <div class="dashboard-card">
-                <div class="dashboard-card-header">
-                    <h3>Saved Items</h3>
-                    <span class="badge">No saved items</span>
+            <?php elseif ($tab === 'orders'): ?>
+                <div class="orders-section">
+                    <h2>Order History</h2>
+                    <p style="margin: 15px 0;">You have not placed any orders yet. Once you make a purchase, your order history will appear here.</p>
+                    <a href="products.php" class="btn btn-primary btn-sm">Start Shopping</a>
                 </div>
-                <p>Save products while browsing and they will appear here for easy checkout later.</p>
-                <a href="products.php" class="btn btn-secondary btn-sm">Save items now</a>
-            </div>
 
-            <div class="dashboard-card">
-                <div class="dashboard-card-header">
-                    <h3>Account Activity</h3>
-                    <span class="badge">Secure</span>
+            <?php elseif ($tab === 'wishlist'): ?>
+                <div class="wishlist-section">
+                    <h2>Saved Items</h2>
+                    <p style="margin: 15px 0;">Your wishlist is currently empty. Save items you like while browsing to see them here.</p>
+                    <a href="products.php" class="btn btn-primary btn-sm">Browse Products</a>
                 </div>
-                <p>Your account is protected and ready. Keep your profile updated and enjoy faster checkout.</p>
-                <a href="contact.php" class="btn btn-secondary btn-sm">Contact support</a>
-            </div>
-        </div>
-    </div>
-</section>
 
-=======
-<?php
-$page_title = 'My Account';
-require 'includes/db.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
-$user_id = $_SESSION['user_id'];
-$user_name = $_SESSION['user_name'] ?? 'Customer';
-$user_email = $_SESSION['user_email'] ?? '';
-
-$stmt = $conn->prepare('SELECT created_at FROM users WHERE id = ? LIMIT 1');
-$stmt->bind_param('i', $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
-$member_since = $user['created_at'] ?? null;
-
-require 'includes/header.php';
-?>
-
-<section class="page-hero">
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="index.php">Home</a>
-            <span>/</span>
-            <span>My Account</span>
-        </div>
-        <h1>My Account</h1>
-        <p>Manage your profile details and review your ShopForge account information.</p>
-    </div>
-</section>
-
-<section>
-    <div class="container">
-        <div class="account-card">
-            <h2>Welcome back, <?php echo htmlspecialchars($user_name); ?>.</h2>
-            <p>Here are your account details. If you want, you can sign out and use the same account later.</p>
-
-            <dl class="account-details">
-                <div>
-                    <dt>Username</dt>
-                    <dd><?php echo htmlspecialchars($user_name); ?></dd>
+            <?php elseif ($tab === 'security'): ?>
+                <div class="security-section">
+                    <h2>Security & Support</h2>
+                    
+                    <h3>Customer Support</h3>
+                    <p>Have issues or questions? Our support team is here to assist you.</p>
+                    <a href="contact.php" class="btn btn-secondary btn-sm">Contact Support</a>
+                    
+                    <hr>
+                    
+                    <h3>Account Controls</h3>
+                    <p>Always secure your profile by logging out when using a shared computer.</p>
+                    <a href="logout.php" class="btn btn-sm" style="color: #b91c1c; background: #fee2e2; border: 1px solid #fca5a5; text-decoration: none; display: inline-block; padding: 8px 16px; border-radius: 4px;">Sign Out Now</a>
                 </div>
-                <div>
-                    <dt>Email</dt>
-                    <dd><?php echo htmlspecialchars($user_email); ?></dd>
-                </div>
-                <?php if ($member_since): ?>
-                <div>
-                    <dt>Member since</dt>
-                    <dd><?php echo date('F j, Y', strtotime($member_since)); ?></dd>
-                </div>
-                <?php endif; ?>
-            </dl>
-
-            <div class="account-actions">
-                <a href="logout.php" class="btn btn-secondary btn-sm">Sign Out</a>
-                <a href="products.php" class="btn btn-primary btn-sm">Continue Shopping</a>
-            </div>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <div class="dashboard-card-header">
-                    <h3>Order History</h3>
-                    <span class="badge">0 orders</span>
-                </div>
-                <p>You haven’t placed any orders yet. Once you buy something, your order history will appear here.</p>
-                <a href="products.php" class="btn btn-secondary btn-sm">Browse products</a>
-            </div>
-
-            <div class="dashboard-card">
-                <div class="dashboard-card-header">
-                    <h3>Saved Items</h3>
-                    <span class="badge">No saved items</span>
-                </div>
-                <p>Save products while browsing and they will appear here for easy checkout later.</p>
-                <a href="products.php" class="btn btn-secondary btn-sm">Save items now</a>
-            </div>
-
-            <div class="dashboard-card">
-                <div class="dashboard-card-header">
-                    <h3>Account Activity</h3>
-                    <span class="badge">Secure</span>
-                </div>
-                <p>Your account is protected and ready. Keep your profile updated and enjoy faster checkout.</p>
-                <a href="contact.php" class="btn btn-secondary btn-sm">Contact support</a>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
 
->>>>>>> Stashed changes
 <?php require 'includes/footer.php'; ?>

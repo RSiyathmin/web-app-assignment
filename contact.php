@@ -51,14 +51,14 @@ require 'includes/header.php';
                     <div class="contact-detail-icon">📍</div>
                     <div class="contact-detail-text">
                         <strong>Address</strong>
-                        <span>142 Commerce Street, Suite 300<br>New York, NY 10012</span>
+                        <span>no 15 galkissa road colombo</span>
                     </div>
                 </div>
                 <div class="contact-detail">
                     <div class="contact-detail-icon">📞</div>
                     <div class="contact-detail-text">
                         <strong>Phone</strong>
-                        <span>+1 (800) 743-6281</span>
+                        <span>01111222233</span>
                     </div>
                 </div>
                 <div class="contact-detail">
