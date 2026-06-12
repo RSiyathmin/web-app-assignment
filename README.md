@@ -8,7 +8,7 @@ A full-stack e-commerce website built with **PHP** and **MySQL**.
 
 | Layer      | Technology          |
 |------------|---------------------|
-| Backend    | PHP 8+              |
+| Backend    | PHP                 |
 | Database   | MySQL               |
 | Frontend   | HTML, CSS, JavaScript |
 | Local host | XAMPP               |
@@ -27,9 +27,9 @@ C:\xampp\htdocs\shopforge
 ```
 
 ### 3. Create the database
-1. Open XAMPP Control Panel → Start **Apache** and **MySQL**
+1. Open XAMPP Control Panel - Start **Apache** and **MySQL**
 2. Open your browser and go to: http://localhost/phpmyadmin
-3. Click **Import** → choose `shopforge/database.sql` → click **Go**
+3. Click **Import** - choose `shopforge/database.sql` → click **Go**
 
 ### 4. Open the site
 Visit: http://localhost/shopforge/
@@ -40,10 +40,10 @@ Visit: http://localhost/shopforge/
 
 | URL | Page |
 |-----|------|
-| `/shopforge/` | Home — hero, featured products, categories |
-| `/shopforge/products.php` | Browse — all products with search & filter |
-| `/shopforge/contact.php` | Contact Us — form saved to database |
-| `/shopforge/about.php` | About Us — story, values, team |
+| `/shopforge/` | Home= hero, featured products, categories |
+| `/shopforge/products.php` | Browse= all products with search & filter |
+| `/shopforge/contact.php` | Contact Us= form saved to database |
+| `/shopforge/about.php` | About Us= story, values, team |
 | `/shopforge/admin/login.php` | Admin Login |
 | `/shopforge/admin/` | Admin Dashboard |
 
@@ -64,10 +64,10 @@ Visit: http://localhost/shopforge/
 
 | Operation | Where it happens |
 |-----------|-----------------|
-| **CREATE** | Admin → Add Product (`admin/add_product.php`) |
+| **CREATE** | Admin - Add Product (`admin/add_product.php`) |
 | **READ**   | Home page featured grid, Browse page, Admin overview & product list |
-| **UPDATE** | Admin → Products → Edit (`admin/edit_product.php`) |
-| **DELETE** | Admin → Products → Delete button (`admin/products.php`) |
+| **UPDATE** | Admin - Products - Edit (`admin/edit_product.php`) |
+| **DELETE** | Admin - Products - Delete button (`admin/products.php`) |
 
 Contact form submissions also **INSERT** into the `contacts` table and are viewable in Admin → Messages.
 
